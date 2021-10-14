@@ -18,7 +18,12 @@ class MovieRepository {
 
   Future<List<Movie>> getPlayingMovies() async {
     var params = {"api_key": apiKey, "language": "en-US", "page": 1};
-    var response = await _dio.get(getPlayingUrl, queryParameters: params);
-    return MovieResponse.fromJson(response.data).movies ;
+    try{
+      var response = await _dio.get(getPlayingUrl, queryParameters: params);
+      return MovieResponse.fromJson(response.data).movies ;
+    }catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return [];
+    }
   }
 }

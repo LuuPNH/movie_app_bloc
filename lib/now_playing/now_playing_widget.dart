@@ -26,7 +26,8 @@ class _NowPlayingWidgetState extends TeqWidgetState<NowPlayingBloc, NowPlayingWi
         ],
         child: BlocConsumer<NowPlayingBloc, NowPlayingState> (
         bloc: bloc,
-          builder: _buildbody,
+          builder:
+          _buildbody,
           listener: _handleAction,
     ));
   }
@@ -42,106 +43,133 @@ class _NowPlayingWidgetState extends TeqWidgetState<NowPlayingBloc, NowPlayingWi
 
   Widget _buildbody(BuildContext context, NowPlayingState state) {
     Size size = MediaQuery.of(context).size ;
-      return Container(
-        color: Colors.red, height: 100.0, width: MediaQuery.of(context).size.width,
-        child: Container(
-          height: 250.0,
-          child: PageIndicatorContainer(
-            align: IndicatorAlign.bottom,
-            length: state.list.take(5).length,
-            indicatorSpace: size.width * 0.03,
-            padding: const EdgeInsets.all(5.0),
-            indicatorColor: Style.Colors.titleColor,
-            indicatorSelectorColor: Style.Colors.secondColor,
-            shape: IndicatorShape.circle(size: 5.0),
-            child: PageView.builder(
-              controller: pageController,
-              scrollDirection: Axis.horizontal,
-              itemCount: state.list.take(5).length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {},
-                  child: Stack(
-                    children: <Widget>[
-                      Hero(
-                        tag: state.list[index].id!,
-                        child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 220.0,
-                            decoration: new BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: new DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                      "https://image.tmdb.org/t/p/original/" +
-                                          state.list[index].backPoster!)),
-                            )),
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                              stops: [
-                                0.0,
-                                0.9
-                              ],
-                              colors: [
-                                Style.Colors.mainColor.withOpacity(1.0),
-                                Style.Colors.mainColor.withOpacity(0.0)
-                              ]),
-                        ),
-                      ),
-                      Positioned(
-                          bottom: 0.0,
-                          top: 0.0,
-                          left: 0.0,
-                          right: 0.0,
-                          child: IconButton(
-                            icon: new Icon(
-                              FontAwesomeIcons.playCircle,
-                              color: Style.Colors.secondColor,
-                              size: 40.0,
-                            ),
-                            onPressed: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => MovieDetailScreen(
-                              //           movie: movies[index],
-                              //         )));
-                            },
-                          )),
-                      Positioned(
-                          bottom: 30.0,
-                          child: Container(
-                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                            width: 250.0,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  state.list[index].title!,
-                                  style: TextStyle(
-                                      height: 1.5,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0),
+      return BlocBuilder<NowPlayingBloc, NowPlayingState>(
+          builder: (context, state){
+            if(state.list.isNotEmpty){
+              return Container(
+                color: Style.Colors.titleColor,
+                height: size.height * 0.27,
+                width: MediaQuery.of(context).size.width,
+                child: Container(
+                  height: size.height * 0.27,
+                  child: PageIndicatorContainer(
+                    align: IndicatorAlign.bottom,
+                    length: state.list.take(5).length,
+                    indicatorSpace: size.width * 0.03,
+                    padding: const EdgeInsets.all(5.0),
+                    indicatorColor: Style.Colors.titleColor,
+                    indicatorSelectorColor: Style.Colors.secondColor,
+                    shape: IndicatorShape.circle(size: 5.0),
+                    child: PageView.builder(
+                      controller: pageController,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: state.list.take(5).length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {},
+                          child: Stack(
+                            children: <Widget>[
+                              Hero(
+                                tag: state.list[index].id!,
+                                child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 220.0,
+                                    decoration: new BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      image: new DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                              "https://image.tmdb.org/t/p/original/" +
+                                                  state.list[index].backPoster!)),
+                                    )),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.bottomCenter,
+                                      end: Alignment.topCenter,
+                                      stops: [
+                                        0.0,
+                                        0.9
+                                      ],
+                                      colors: [
+                                        Style.Colors.mainColor.withOpacity(1.0),
+                                        Style.Colors.mainColor.withOpacity(0.0)
+                                      ]),
                                 ),
-                              ],
-                            ),
-                          )),
-                    ],
+                              ),
+                              Positioned(
+                                  bottom: 0.0,
+                                  top: 0.0,
+                                  left: 0.0,
+                                  right: 0.0,
+                                  child: IconButton(
+                                    icon: new Icon(
+                                      FontAwesomeIcons.playCircle,
+                                      color: Style.Colors.secondColor,
+                                      size: size.height * 0.05,
+                                    ),
+                                    onPressed: () {
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) => MovieDetailScreen(
+                                      //           movie: movies[index],
+                                      //         )));
+                                    },
+                                  )),
+                              Positioned(
+                                  bottom: 20.0,
+                                  child: Container(
+                                    padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                                    width: size.width,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          state.list[index].title!,
+                                          style: TextStyle(
+                                              height: 1.5,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18.0),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                );
-              },
-            ),
-          ),
-        ),
+                ),
 
-      );
+              );
+            } else if(state.isLoading) {
+              return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 25.0,
+                        width: 25.0,
+                        child: CircularProgressIndicator(
+                          valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                          strokeWidth: 4.0,
+                        ),
+                      )
+                    ],
+                  ));
+            } else {
+              return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Can't load slide images"),
+                    ],
+                  ));
+            }
+          });
   }
 }
