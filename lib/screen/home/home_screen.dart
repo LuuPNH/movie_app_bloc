@@ -1,5 +1,6 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app_bloc/genres/genre_widget.dart';
 import 'package:movie_app_bloc/now_playing/now_playing_widget.dart';
 import '../../style/theme.dart' as Style;
 
@@ -35,7 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: NowPlayingWidget(),
+      body: ListView(
+        children: [
+          NowPlayingWidget(),
+          GenresWidget(),
+        ],
+      ),
     );
   }
 }

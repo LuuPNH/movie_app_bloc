@@ -1,7 +1,7 @@
 import 'genre.dart';
 
 class GenreResponse {
-  final List<Genre> genres;
+  final List<Genre>? genres;
 
   GenreResponse(this.genres);
 
