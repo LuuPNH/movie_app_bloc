@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "341310941631",
+    "project_id": "movieapp-327515",
+    "storage_bucket": "movieapp-327515.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341310941631:android:0cd13d23c4c69b42e1d90a",
+        "android_client_info": {
+          "package_name": "com.example.movie_app_bloc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341310941631-jhl9ah7043f4fbp1u30c1ttilmpmgdib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFkRWthoGSfMZ3L5IKx-7L9YIVQ4LXFdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341310941631-jhl9ah7043f4fbp1u30c1ttilmpmgdib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341310941631:android:7b51eaad6af39ab7e1d90a",
+        "android_client_info": {
+          "package_name": "com.example.movieappfinal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341310941631-56djukbf3edjbaf5tuctu81hhcam087e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.movieappfinal",
+            "certificate_hash": "94e57070f5814ae8b02fbcb7e609765371143953"
+          }
+        },
+        {
+          "client_id": "341310941631-jhl9ah7043f4fbp1u30c1ttilmpmgdib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFkRWthoGSfMZ3L5IKx-7L9YIVQ4LXFdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341310941631-jhl9ah7043f4fbp1u30c1ttilmpmgdib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
