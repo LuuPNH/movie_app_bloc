@@ -11,7 +11,7 @@ class SimpleBlocObserver extends BlocObserver {
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     // TODO: implement onError
     super.onError(bloc, error, stackTrace);
-    print(error);
+    //print(error);
   }
 
   @override
@@ -22,6 +22,6 @@ class SimpleBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
-    print('${bloc.runtimeType} $change');
+    //print('${bloc.runtimeType} $change');
   }
 }

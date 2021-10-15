@@ -2,25 +2,17 @@ import 'package:meta/meta.dart';
 import 'package:teq_flutter_core/teq_flutter_core.dart';
 
 @immutable
-abstract class GenreMovieEvent extends BaseEvent {
+class GenresMovieEvent extends BaseEvent {
   final int id;
   final int pageKey;
 
-  GenreMovieEvent(this.id, this.pageKey);
+  GenresMovieEvent(this.id, this.pageKey);
 }
 
 @immutable
- class GenreMovieDataEvent extends BaseEvent {
+class GenresMovieMoreEvent extends BaseEvent {
   final int id;
   final int pageKey;
 
-  GenreMovieDataEvent(this.id, this.pageKey);
-
-
-}
-@immutable
-class GenreMovieDataMoreEvent extends BaseEvent {
-  final int id;
-  final int pageKey;
-  GenreMovieDataMoreEvent(this.id, this.pageKey);
+  GenresMovieMoreEvent(this.id, this.pageKey);
 }

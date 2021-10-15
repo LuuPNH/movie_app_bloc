@@ -79,7 +79,7 @@ class _GenresWidgetState extends TeqWidgetState<GenreBloc, GenresWidget> with Ba
                       physics: NeverScrollableScrollPhysics(),
                       children: state.list.map((Genre genre) {
                         return BlocProvider(
-                            create: (context) => GenreMovieBloc(genre.id, 1)..add(InitialEvent()),
+                            create: (context) => GenreMovieBloc(),
                             child: GenreMoviesWidget(genreId: genre.id));
                       }).toList(),
                     ),

@@ -6,21 +6,32 @@ import 'package:teq_flutter_core/teq_flutter_core.dart';
 
  class GenreMovieBloc extends BaseBloc<GenreMovieState> {
 
-  final int id;
-  final int? page;
+   GenreMovieBloc() : super(GenreMovieState(isLoading: true));
 
-  GenreMovieBloc(this.id, this.page) : super(GenreMovieState(id: id, page: page ?? 1));
+
 
   MovieRepository movieRepository = MovieRepository();
-  List<Movie> list = [];
 
   @override
   Stream<GenreMovieState> mapEventToState(BaseEvent event) async* {
     if (event is InitialEvent) {
-      list = await movieRepository.getMovieByGenre(id, page!);
-      yield state.copyWith(list: list);
-    } if(event is GenreMovieDataMoreEvent) {
-      var li = await movieRepository.getMovieByGenre(event.id, event.pageKey);
+      yield state.copyWith(list: []);
     }
+    if(event is GenresMovieEvent) {
+      var list = await movieRepository.getMovieByGenre(event.id, event.pageKey);
+      yield state.copyWith(list: list);
+    }
+    if(event is GenresMovieMoreEvent) {
+      if(state.list?.isNotEmpty == true) {
+        List<Movie>? _list = await movieRepository.getMovieByGenre(event.id, event.pageKey);
+        for(int i=0; i < _list.length; i++) {
+          if(_list.isNotEmpty) {
+            state.list!.add(_list[i]);
+          }
+        }
+        yield state.copyWith(list: state.list);
+      }
+    }
+
   }
 }

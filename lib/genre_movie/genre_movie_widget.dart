@@ -39,7 +39,7 @@ class _GenreMoviesWidgetState
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [BlocProvider(create: (context) => bloc)],
+        providers: [BlocProvider(create: (context) => bloc..add(GenresMovieEvent(genreId, 1)))],
         child: BlocConsumer<GenreMovieBloc, GenreMovieState>(
           bloc: bloc,
           builder: _buildbody,
@@ -50,7 +50,7 @@ class _GenreMoviesWidgetState
   void _handleAction(BuildContext context, GenreMovieState state) {}
 
   @override
-  GenreMovieBloc createBloc() => GenreMovieBloc(genreId, page);
+  GenreMovieBloc createBloc() => GenreMovieBloc();
 
   @override
   BaseBloc get refresherBloc => bloc;
@@ -59,7 +59,7 @@ class _GenreMoviesWidgetState
     Size size = MediaQuery.of(context).size;
     return BlocBuilder<GenreMovieBloc, GenreMovieState>(
         builder: (context, state) {
-      if (state.list.isNotEmpty) {
+      if (state.list?.isNotEmpty == true) {
         return Container(
           height: size.height * 0.4,
           padding: EdgeInsets.only(left: 10.0),
@@ -68,6 +68,7 @@ class _GenreMoviesWidgetState
             enablePullUp: true,
             footer: CustomFooter(
               builder: (BuildContext context, LoadStatus? mode) {
+                print(mode);
                 Widget body;
                 if (mode == LoadStatus.idle) {
                   body = Text(
@@ -101,23 +102,16 @@ class _GenreMoviesWidgetState
             onLoading: _onLoadMore,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: state.list.length,
+                itemCount: state.list!.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding:
                         EdgeInsets.only(top: 10.0, bottom: 10.0, right: 10.0),
                     child: GestureDetector(
-                      onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => MovieDetailScreen(
-                        //           movie: movies[index],
-                        //         )));
-                      },
+                      onTap: () {},
                       child: Column(
                         children: [
-                          state.list[index].poster == null
+                          state.list![index].poster == null
                               ? Container(
                                   width: size.width * 0.2,
                                   height: size.height * 0.4,
@@ -147,7 +141,7 @@ class _GenreMoviesWidgetState
                                     image: DecorationImage(
                                         image: NetworkImage(
                                             "https://image.tmdb.org/t/p/w200" +
-                                                state.list[index].poster!),
+                                                state.list![index].poster!),
                                         fit: BoxFit.cover),
                                   ),
                                 ),
@@ -158,7 +152,7 @@ class _GenreMoviesWidgetState
                             child: Container(
                               width: size.height * 0.15,
                               child: Text(
-                                state.list[index].title!,
+                                state.list![index].title!,
                                 maxLines: 2,
                                 style: TextStyle(
                                   height: size.height * 0.002,
@@ -175,7 +169,7 @@ class _GenreMoviesWidgetState
                           Row(
                             children: [
                               Text(
-                                (state.list[index].rating! / 2)
+                                (state.list![index].rating! / 2)
                                     .toString()
                                     .substring(0, 3),
                                 style: TextStyle(
@@ -188,7 +182,7 @@ class _GenreMoviesWidgetState
                               ),
                               RatingBar.builder(
                                 itemSize: size.width * 0.03,
-                                initialRating: state.list[index].rating! / 2,
+                                initialRating: state.list![index].rating! / 2,
                                 minRating: 1,
                                 direction: Axis.horizontal,
                                 allowHalfRating: true,
@@ -204,7 +198,8 @@ class _GenreMoviesWidgetState
                                 },
                               )
                             ],
-                          )
+                          ),
+
                         ],
                       ),
                     ),
@@ -236,8 +231,7 @@ class _GenreMoviesWidgetState
   void _onLoadMore() async {
     await Future.delayed(Duration(milliseconds: 500));
     page += 1;
-    bloc.add(GenreMovieDataMoreEvent(genreId, page));
-
+    bloc.add(GenresMovieMoreEvent(genreId, page));
     _refreshController.loadComplete();
   }
 
@@ -246,7 +240,7 @@ class _GenreMoviesWidgetState
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
     page = 1;
-    bloc.add(GenreMovieDataEvent(genreId, page));
-    _refreshController.refreshCompleted();
+    bloc.add(GenresMovieEvent(genreId, page));
+    _refreshController.loadComplete();
   }
 }
