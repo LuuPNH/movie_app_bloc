@@ -19,6 +19,8 @@ import 'package:teq_flutter_core/teq_flutter_core.dart';
     if (event is InitialEvent) {
       list = await movieRepository.getMovieByGenre(id, page!);
       yield state.copyWith(list: list);
+    } if(event is GenreMovieDataMoreEvent) {
+      var li = await movieRepository.getMovieByGenre(event.id, event.pageKey);
     }
   }
 }

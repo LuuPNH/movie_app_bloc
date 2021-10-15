@@ -236,7 +236,7 @@ class _GenreMoviesWidgetState
   void _onLoadMore() async {
     await Future.delayed(Duration(milliseconds: 500));
     page += 1;
-    bloc.mapEventToState(GenreMovieEvent(genreId, page));
+    bloc.add(GenreMovieDataMoreEvent(genreId, page));
     if (bloc.list.isEmpty) {
       isLoadMore = "Can't load more";
     }
