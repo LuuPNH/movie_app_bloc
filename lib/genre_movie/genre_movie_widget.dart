@@ -237,9 +237,7 @@ class _GenreMoviesWidgetState
     await Future.delayed(Duration(milliseconds: 500));
     page += 1;
     bloc.add(GenreMovieDataMoreEvent(genreId, page));
-    if (bloc.list.isEmpty) {
-      isLoadMore = "Can't load more";
-    }
+
     _refreshController.loadComplete();
   }
 
