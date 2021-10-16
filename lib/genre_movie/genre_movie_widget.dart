@@ -28,18 +28,15 @@ class _GenreMoviesWidgetState
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  String isLoadMore = "more ...";
   int page = 1;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [BlocProvider(create: (context) => bloc..add(GenresMovieEvent(genreId, 1)))],
+        providers: [
+          BlocProvider(
+              create: (context) => bloc..add(GenresMovieEvent(genreId, 1)))
+        ],
         child: BlocConsumer<GenreMovieBloc, GenreMovieState>(
           bloc: bloc,
           builder: _buildbody,
@@ -55,6 +52,22 @@ class _GenreMoviesWidgetState
   @override
   BaseBloc get refresherBloc => bloc;
 
+  void _onLoadMore() async {
+    await Future.delayed(Duration(milliseconds: 500));
+    page += 1;
+    bloc.add(GenresMovieMoreEvent(genreId, page));
+    _refreshController.loadComplete();
+  }
+
+  void _onRefresh() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    page = 1;
+    bloc.add(GenresMovieEvent(genreId, page));
+    _refreshController.refreshCompleted();
+  }
+
   Widget _buildbody(BuildContext context, GenreMovieState state) {
     Size size = MediaQuery.of(context).size;
     return BlocBuilder<GenreMovieBloc, GenreMovieState>(
@@ -64,15 +77,28 @@ class _GenreMoviesWidgetState
           height: size.height * 0.4,
           padding: EdgeInsets.only(left: 10.0),
           child: SmartRefresher(
-            enablePullDown: false,
+            enablePullDown: true,
             enablePullUp: true,
+            header: ClassicHeader(
+              refreshingIcon: SizedBox(
+                height: size.height * 0.02,
+                width: size.width * 0.04,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  color: Style.Colors.secondColor,
+                ),
+              ),
+              refreshingText: "",
+              releaseText: "",
+              completeText: "",
+            ),
             footer: CustomFooter(
               builder: (BuildContext context, LoadStatus? mode) {
                 print(mode);
                 Widget body;
                 if (mode == LoadStatus.idle) {
                   body = Text(
-                    isLoadMore,
+                    "",
                     style: TextStyle(color: Colors.white),
                   );
                 } else if (mode == LoadStatus.loading) {
@@ -178,7 +204,7 @@ class _GenreMoviesWidgetState
                                     fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
-                                width:  size.width * 0.005,
+                                width: size.width * 0.005,
                               ),
                               RatingBar.builder(
                                 itemSize: size.width * 0.03,
@@ -187,8 +213,8 @@ class _GenreMoviesWidgetState
                                 direction: Axis.horizontal,
                                 allowHalfRating: true,
                                 itemCount: 5,
-                                itemPadding:
-                                    EdgeInsets.symmetric(horizontal: size.width * 0.003),
+                                itemPadding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.003),
                                 itemBuilder: (context, _) => Icon(
                                   EvaIcons.star,
                                   color: Style.Colors.secondColor,
@@ -199,7 +225,6 @@ class _GenreMoviesWidgetState
                               )
                             ],
                           ),
-
                         ],
                       ),
                     ),
@@ -226,21 +251,5 @@ class _GenreMoviesWidgetState
         );
       }
     });
-  }
-
-  void _onLoadMore() async {
-    await Future.delayed(Duration(milliseconds: 500));
-    page += 1;
-    bloc.add(GenresMovieMoreEvent(genreId, page));
-    _refreshController.loadComplete();
-  }
-
-  void _onRefresh() async {
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
-    page = 1;
-    bloc.add(GenresMovieEvent(genreId, page));
-    _refreshController.loadComplete();
   }
 }

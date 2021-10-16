@@ -1,10 +1,14 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:movie_app_bloc/model/detail_movie/MovieDetail.dart';
+import 'package:movie_app_bloc/model/detail_movie/MovieDetailResponse.dart';
 import 'package:movie_app_bloc/model/genre/genre.dart';
 import 'package:movie_app_bloc/model/genre/genre_response.dart';
-import 'package:movie_app_bloc/model/movie.dart';
-import 'package:movie_app_bloc/model/movie_response.dart';
+import 'package:movie_app_bloc/model/movie/movie.dart';
+import 'package:movie_app_bloc/model/movie/movie_response.dart';
+import 'package:movie_app_bloc/model/person/person.dart';
+import 'package:movie_app_bloc/model/person/person_response.dart';
 
 class MovieRepository {
   final String apiKey = "96ab22f969e17fcd4b92e1d1c73b4dbc";
@@ -15,26 +19,27 @@ class MovieRepository {
   var getPlayingUrl = '$mainUrl/movie/now_playing';
   var getGenresUrl = "$mainUrl/genre/movie/list";
   var getPersonsUrl = "$mainUrl/trending/person/week";
-  var movieUrl = "$mainUrl/movie";
+  var getMovieDetailUrl = "$mainUrl/movie";
   var searchMovieUrl = "$mainUrl/search/movie";
 
   Future<List<Movie>> getPlayingMovies() async {
-    var params = {"api_key": apiKey, "language": "en-US", "page": 1};
-    try{
+    var params = {"api_key": apiKey, "page": 1};
+    try {
       var response = await _dio.get(getPlayingUrl, queryParameters: params);
-      return MovieResponse.fromJson(response.data).movies ;
-    }catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
+      return MovieResponse.fromJson(response.data).movies;
+    } catch (error, stacktrace) {
+      print("Exception Repositoty: $error stackTrace: $stacktrace");
       return [];
     }
   }
+
   Future<List<Genre>?> getGenres() async {
-    var params = {"api_key": apiKey, "language": "en-US", "page": 1};
-    try{
+    var params = {"api_key": apiKey, "page": 1};
+    try {
       var response = await _dio.get(getGenresUrl, queryParameters: params);
-      return GenreResponse.fromJson(response.data).genres ;
-    }catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
+      return GenreResponse.fromJson(response.data).genres;
+    } catch (error, stacktrace) {
+      print("Exception Repositoty: $error stackTrace: $stacktrace");
       return [];
     }
   }
@@ -42,16 +47,59 @@ class MovieRepository {
   Future<List<Movie>> getMovieByGenre(int id, int page) async {
     var params = {
       "api_key": apiKey,
-      "language": "en-US",
       "page": page,
       "with_genres": id
     };
     try {
-      Response response = await _dio.get(getMoviesByGenreUrl, queryParameters: params);
+      Response response =
+          await _dio.get(getMoviesByGenreUrl, queryParameters: params);
       return MovieResponse.fromJson(response.data).movies;
     } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
+      print("Exception Repositoty: $error stackTrace: $stacktrace");
       return [];
+    }
+  }
+  Future<List<Person>> getPersons(int page) async {
+    var params = {
+      "api_key": apiKey,
+      "page": page,
+    };
+    try {
+      Response response =
+      await _dio.get(getPersonsUrl, queryParameters: params);
+      return PersonResponse.fromJson(response.data).persons;
+    } catch (error, stacktrace) {
+      print("Exception Repositoty: $error stackTrace: $stacktrace");
+      return [];
+    }
+  }
+  Future<List<Movie>> getPopularMovies(int page) async {
+    var params = {
+      "api_key": apiKey,
+      "page": page,
+    };
+    try {
+      Response response =
+      await _dio.get(getPopularUrl, queryParameters: params);
+      return MovieResponse.fromJson(response.data).movies;
+    } catch (error, stacktrace) {
+      print("Exception Repositoty: $error stackTrace: $stacktrace");
+      return [];
+    }
+  }
+  Future<MovieDetail> getMovieDetail(int id, int page) async {
+    var params = {
+      "api_key": apiKey,
+      "language": "en-US",
+      "page": page
+    };
+    try {
+      Response response =
+      await _dio.get(getMovieDetailUrl + "/$id", queryParameters: params);
+      return MovieDetailResponse.fromJson(response.data).movieDetail;
+    } catch (error, stacktrace) {
+      print("Exception Repositoty: $error stackTrace: $stacktrace");
+      return MovieDetail(1,false, 1,[],"erorr", 1);
     }
   }
 }

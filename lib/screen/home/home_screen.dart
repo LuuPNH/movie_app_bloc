@@ -2,6 +2,8 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app_bloc/genres/genre_widget.dart';
 import 'package:movie_app_bloc/now_playing/now_playing_widget.dart';
+import 'package:movie_app_bloc/person/person_widget.dart';
+import 'package:movie_app_bloc/popular/popular_widget.dart';
 import '../../style/theme.dart' as Style;
 
 class HomeScreen extends StatefulWidget {
@@ -40,6 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           NowPlayingWidget(),
           GenresWidget(),
+          PersonsWidget(),
+          PopularMovieWidget(),
         ],
       ),
     );

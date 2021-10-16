@@ -1,7 +1,7 @@
 import 'package:movie_app_bloc/model/movie/movie.dart';
 import 'package:teq_flutter_core/teq_flutter_core.dart';
 
-class GenreMovieState extends RefresherBaseState<Movie> {
+class PopularMovieState extends RefresherBaseState<Movie> {
   final otherError;
 
 
@@ -16,7 +16,7 @@ class GenreMovieState extends RefresherBaseState<Movie> {
     otherError
   ];
 
-  GenreMovieState({
+  PopularMovieState({
     isFirstLoad = true,
     isLoading = false,
     isLoadingMore = false,
@@ -34,7 +34,7 @@ class GenreMovieState extends RefresherBaseState<Movie> {
   );
 
   @override
-  GenreMovieState copyWith({
+  PopularMovieState copyWith({
     bool? isFirstLoad,
     bool? isLoading,
     bool? isLoadingMore,
@@ -43,7 +43,7 @@ class GenreMovieState extends RefresherBaseState<Movie> {
     BaseItemAttributes? itemAttributes,
     var otherError,
   }) =>
-      GenreMovieState(
+      PopularMovieState(
         isFirstLoad: isFirstLoad ?? this.isFirstLoad,
         isLoading: isLoading ?? false,
         isLoadingMore: isLoadingMore ?? this.isLoadingMore,

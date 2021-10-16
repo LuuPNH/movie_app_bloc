@@ -1,4 +1,4 @@
-import 'movie.dart';
+import 'package:movie_app_bloc/model/movie/movie.dart';
 
 class MovieResponse {
   final List<Movie> movies;
@@ -7,6 +7,6 @@ class MovieResponse {
 
   MovieResponse.fromJson(Map<String, dynamic> json)
       : movies = (json["results"] as List)
-      .map((i) => new Movie.fromJson(i))
-      .toList();
+            .map((i) => new Movie.fromJson(i))
+            .toList();
 }

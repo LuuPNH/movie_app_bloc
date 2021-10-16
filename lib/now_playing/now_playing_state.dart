@@ -1,6 +1,6 @@
 
 
-import 'package:movie_app_bloc/model/movie.dart';
+import 'package:movie_app_bloc/model/movie/movie.dart';
 import 'package:teq_flutter_core/teq_flutter_core.dart';
 
 class NowPlayingState extends BaseState {
