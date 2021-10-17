@@ -9,6 +9,8 @@ import 'package:movie_app_bloc/model/movie/movie.dart';
 import 'package:movie_app_bloc/model/movie/movie_response.dart';
 import 'package:movie_app_bloc/model/person/person.dart';
 import 'package:movie_app_bloc/model/person/person_response.dart';
+import 'package:movie_app_bloc/model/video/video.dart';
+import 'package:movie_app_bloc/model/video/video_response.dart';
 
 class MovieRepository {
   final String apiKey = "96ab22f969e17fcd4b92e1d1c73b4dbc";
@@ -19,7 +21,7 @@ class MovieRepository {
   var getPlayingUrl = '$mainUrl/movie/now_playing';
   var getGenresUrl = "$mainUrl/genre/movie/list";
   var getPersonsUrl = "$mainUrl/trending/person/week";
-  var getMovieDetailUrl = "$mainUrl/movie";
+  var getMovielUrl = "$mainUrl/movie";
   var searchMovieUrl = "$mainUrl/search/movie";
 
   Future<List<Movie>> getPlayingMovies() async {
@@ -95,11 +97,25 @@ class MovieRepository {
     };
     try {
       Response response =
-      await _dio.get(getMovieDetailUrl + "/$id", queryParameters: params);
+      await _dio.get(getMovielUrl + "/$id", queryParameters: params);
       return MovieDetailResponse.fromJson(response.data).movieDetail;
     } catch (error, stacktrace) {
       print("Exception Repositoty: $error stackTrace: $stacktrace");
       return MovieDetail(1,false, 1,[],"erorr", 1);
+    }
+  }
+  Future<Video> getVideo(int id) async {
+    var params = {
+      "api_key": apiKey,
+      "language": "en-US",
+    };
+    try {
+      Response response =
+      await _dio.get(getMovielUrl + "/$id" + "/videos");
+      return VideoResponse.fromJson(response.data).videos;
+    } catch (error, stacktrace) {
+      print("Exception Repositoty: $error stackTrace: $stacktrace");
+      return Video("1", "hihi", "hihi", "site", "");
     }
   }
 }
