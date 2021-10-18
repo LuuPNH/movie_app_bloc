@@ -16,16 +16,15 @@ class GenresWidget extends StatefulWidget {
   _GenresWidgetState createState() => _GenresWidgetState();
 }
 
-class _GenresWidgetState extends TeqWidgetState<GenreBloc, GenresWidget> with BasePullToRefreshMixin<GenresWidget>{
-   TabController? _tabController;
+class _GenresWidgetState extends TeqWidgetState<GenreBloc, GenresWidget>
+    with BasePullToRefreshMixin<GenresWidget> {
+  TabController? _tabController;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => bloc)
-        ],
-        child: BlocConsumer<GenreBloc, GenreState> (
+        providers: [BlocProvider(create: (context) => bloc)],
+        child: BlocConsumer<GenreBloc, GenreState>(
           bloc: bloc,
           builder: _buildbody,
           listener: _handleAction,
@@ -42,75 +41,73 @@ class _GenresWidgetState extends TeqWidgetState<GenreBloc, GenresWidget> with Ba
   BaseBloc get refresherBloc => bloc;
 
   Widget _buildbody(BuildContext context, GenreState state) {
-    Size size = MediaQuery.of(context).size ;
-    return BlocBuilder<GenreBloc, GenreState>(
-        builder: (context, state) {
-          if(state.list.isNotEmpty){
-            return Container(
-              height: size.height * 0.4,
-              child: DefaultTabController(
-                length: state.list.length,
-                child: Scaffold(
-                  backgroundColor: Style.Colors.mainColor,
-                  appBar: PreferredSize(
-                      child: AppBar(
-                        backgroundColor: Style.Colors.mainColor,
-                        bottom: TabBar(
-                            //controller: _tabController,
-                            indicatorColor: Style.Colors.secondColor,
-                            indicatorWeight: 3.0,
-                            unselectedLabelColor: Style.Colors.titleColor,
-                            labelColor: Colors.white,
-                            isScrollable: true,
-                            tabs: state.list.map((Genre genre) {
-                              return Container(
-                                padding: EdgeInsets.only(bottom: 15.0, top: 10.0),
-                                child: Text(
-                                  genre.name!.toUpperCase(),
-                                  style: TextStyle(
-                                      fontSize: 14.0, fontWeight: FontWeight.bold),
-                                ),
-                              );
-                            }).toList()),
-                      ),
-                      preferredSize: Size.fromHeight(50)),
-                  body: TabBarView(
-                      controller: _tabController,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: state.list.map((Genre genre) {
-                        return BlocProvider(
-                            create: (context) => GenreMovieBloc(),
-                            child: GenreMoviesWidget(genreId: genre.id));
-                      }).toList(),
-                    ),
+    Size size = MediaQuery.of(context).size;
+    return BlocBuilder<GenreBloc, GenreState>(builder: (context, state) {
+      if (state.list.isNotEmpty) {
+        return Container(
+          height: size.height * 0.4,
+          child: DefaultTabController(
+            length: state.list.length,
+            child: Scaffold(
+              backgroundColor: Style.Colors.mainColor,
+              appBar: PreferredSize(
+                  child: AppBar(
+                    backgroundColor: Style.Colors.mainColor,
+                    bottom: TabBar(
+                        //controller: _tabController,
+                        indicatorColor: Style.Colors.secondColor,
+                        indicatorWeight: 3.0,
+                        unselectedLabelColor: Style.Colors.titleColor,
+                        labelColor: Colors.white,
+                        isScrollable: true,
+                        tabs: state.list.map((Genre genre) {
+                          return Container(
+                            padding: EdgeInsets.only(bottom: 15.0, top: 10.0),
+                            child: Text(
+                              genre.name!.toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 14.0, fontWeight: FontWeight.bold),
+                            ),
+                          );
+                        }).toList()),
                   ),
-                ),
-            );
-          } else if(state.isLoading) {
-            return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 25.0,
-                      width: 25.0,
-                      child: CircularProgressIndicator(
-                        valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-                        strokeWidth: 4.0,
-                      ),
-                    )
-                  ],
-                ));
-          } else {
-            return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Can't load list genres"),
-                  ],
-                ));
-          }
-        }
-    );
+                  preferredSize: Size.fromHeight(50)),
+              body: TabBarView(
+                controller: _tabController,
+                physics: NeverScrollableScrollPhysics(),
+                children: state.list.map((Genre genre) {
+                  return BlocProvider(
+                      create: (context) => GenreMovieBloc(),
+                      child: GenreMoviesWidget(genreId: genre.id));
+                }).toList(),
+              ),
+            ),
+          ),
+        );
+      } else if (state.isLoading) {
+        return Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 25.0,
+              width: 25.0,
+              child: CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                strokeWidth: 4.0,
+              ),
+            )
+          ],
+        ));
+      } else {
+        return Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Can't load list genres"),
+          ],
+        ));
+      }
+    });
   }
 }

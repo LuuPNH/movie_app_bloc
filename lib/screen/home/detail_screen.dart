@@ -1,6 +1,9 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:movie_app_bloc/detail/info/movie_info_widget.dart';
+import 'package:movie_app_bloc/detail/similar/similar_widget.dart';
+import 'package:movie_app_bloc/detail/video/video_widget.dart';
 import 'package:movie_app_bloc/model/movie/movie.dart';
 import 'package:movie_app_bloc/style/theme.dart' as Style;
 
@@ -25,6 +28,7 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
     bool _pinned = true;
     bool _snap = false;
     bool _floating = false;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: Style.Colors.mainColor,
         body: CustomScrollView(
@@ -34,12 +38,12 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
               snap: _snap,
               floating: _floating,
               backgroundColor: Style.Colors.mainColor,
-              expandedHeight: 200.0,
+              expandedHeight: size.height * 0.3,
               bottom: PreferredSize(
                   preferredSize: const Size.fromHeight(0.0),
                   child: Transform.translate(
                     offset: const Offset(150, 30),
-                    child: Container(height: 100.0, color: Colors.white,),
+                    child: VideoWidget(movie: movie),
                   )),
               flexibleSpace: FlexibleSpaceBar(
                 title: Text(
@@ -56,6 +60,7 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
                       decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
                           image: DecorationImage(
+                              fit: BoxFit.cover,
                               image: NetworkImage(
                                   "https://image.tmdb.org/t/p/original/" +
                                       movie.backPoster!))),
@@ -141,15 +146,13 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
                         SizedBox(
                           height: 10.0,
                         ),
-                        // MovieInfo(
-                        //   id: movie.id!,
-                        // ),
-                        // SimilarMovies(
-                        //   id: movie.id!,
-                        // )
+                        MovieInfoWidget(id: movie.id!),
+                        SimilarMovieWidget(id: movie.id!)
                       ],
                     )))
           ],
         ));
   }
 }
+
+

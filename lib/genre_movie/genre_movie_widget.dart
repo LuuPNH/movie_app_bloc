@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app_bloc/genre_movie/genre_movie_bloc.dart';
 import 'package:movie_app_bloc/genre_movie/genre_movie_event.dart';
 import 'package:movie_app_bloc/genre_movie/genre_movie_state.dart';
+import 'package:movie_app_bloc/screen/home/detail_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:teq_flutter_core/teq_flutter_core.dart';
 import 'package:movie_app_bloc/style/theme.dart' as Style;
@@ -134,7 +135,14 @@ class _GenreMoviesWidgetState
                     padding:
                         EdgeInsets.only(top: 10.0, bottom: 10.0, right: 10.0),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DetailMovieScreen(
+                                  movie: state.list![index],
+                                )));
+                      },
                       child: Column(
                         children: [
                           state.list![index].poster == null

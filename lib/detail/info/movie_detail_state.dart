@@ -1,24 +1,24 @@
-import 'package:movie_app_bloc/model/video/video.dart';
+import 'package:movie_app_bloc/model/detail_movie/MovieDetail.dart';
 import 'package:teq_flutter_core/teq_flutter_core.dart';
 
-class VideoState extends BaseState {
+class MovieDetailState extends BaseState {
   final error;
   final bool isLoading;
-  final Video? item;
+  final MovieDetail? item;
 
   @override
   // TODO: implement props
   List<Object?> get props => [error, isLoading, item];
 
-  VideoState(
+  MovieDetailState(
       {this.error, this.isLoading = false, this.item});
 
-  VideoState copyWith({
+  MovieDetailState copyWith({
     bool? isLoading,
     var error,
-    Video? item,
+    MovieDetail? item
   }) =>
-      VideoState(
+      MovieDetailState(
           error: error,
           isLoading: isLoading ?? false,
           item: item ?? this.item);

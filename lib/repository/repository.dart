@@ -47,11 +47,7 @@ class MovieRepository {
   }
 
   Future<List<Movie>> getMovieByGenre(int id, int page) async {
-    var params = {
-      "api_key": apiKey,
-      "page": page,
-      "with_genres": id
-    };
+    var params = {"api_key": apiKey, "page": page, "with_genres": id};
     try {
       Response response =
           await _dio.get(getMoviesByGenreUrl, queryParameters: params);
@@ -61,6 +57,7 @@ class MovieRepository {
       return [];
     }
   }
+
   Future<List<Person>> getPersons(int page) async {
     var params = {
       "api_key": apiKey,
@@ -68,13 +65,14 @@ class MovieRepository {
     };
     try {
       Response response =
-      await _dio.get(getPersonsUrl, queryParameters: params);
+          await _dio.get(getPersonsUrl, queryParameters: params);
       return PersonResponse.fromJson(response.data).persons;
     } catch (error, stacktrace) {
       print("Exception Repositoty: $error stackTrace: $stacktrace");
       return [];
     }
   }
+
   Future<List<Movie>> getPopularMovies(int page) async {
     var params = {
       "api_key": apiKey,
@@ -82,40 +80,50 @@ class MovieRepository {
     };
     try {
       Response response =
-      await _dio.get(getPopularUrl, queryParameters: params);
+          await _dio.get(getPopularUrl, queryParameters: params);
       return MovieResponse.fromJson(response.data).movies;
     } catch (error, stacktrace) {
       print("Exception Repositoty: $error stackTrace: $stacktrace");
       return [];
     }
   }
-  Future<MovieDetail> getMovieDetail(int id, int page) async {
-    var params = {
-      "api_key": apiKey,
-      "language": "en-US",
-      "page": page
-    };
+
+  Future<MovieDetail> getMovie(int id) async {
+    var params = {"api_key": apiKey, "language": "en-US"};
     try {
       Response response =
-      await _dio.get(getMovielUrl + "/$id", queryParameters: params);
+          await _dio.get(getMovielUrl + "/$id", queryParameters: params);
       return MovieDetailResponse.fromJson(response.data).movieDetail;
     } catch (error, stacktrace) {
       print("Exception Repositoty: $error stackTrace: $stacktrace");
-      return MovieDetail(1,false, 1,[],"erorr", 1);
+      return MovieDetail(1, false, 1, [], "erorr", 1);
     }
   }
+
   Future<Video> getVideo(int id) async {
     var params = {
       "api_key": apiKey,
       "language": "en-US",
     };
     try {
-      Response response =
-      await _dio.get(getMovielUrl + "/$id" + "/videos");
+      Response response = await _dio.get(getMovielUrl + "/$id" + "/videos",
+          queryParameters: params);
       return VideoResponse.fromJson(response.data).videos;
     } catch (error, stacktrace) {
       print("Exception Repositoty: $error stackTrace: $stacktrace");
       return Video("1", "hihi", "hihi", "site", "");
+    }
+  }
+
+  Future<List<Movie>> getSimilarMovie(int id, int page) async {
+    var params = {"api_key": apiKey, "language": "en-US", "page": page};
+    try {
+      Response response = await _dio.get(getMovielUrl + "/$id" + "/similar",
+          queryParameters: params);
+      return MovieResponse.fromJson(response.data).movies;
+    } catch (error, stacktrace) {
+      print("Exception Repositoty: $error stackTrace: $stacktrace");
+      return [];
     }
   }
 }
