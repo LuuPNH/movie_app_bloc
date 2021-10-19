@@ -30,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
       PersonsWidget(),
       PopularMovieWidget(),
     ]),
+
     AuthenWidget()
   ];
 

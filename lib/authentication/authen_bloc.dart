@@ -20,7 +20,7 @@ class AuthenBloc extends BaseBloc<AuthenState> {
       }
     } else if (event is AuthenLoggedInEvent) {
       yield state.copyWith(
-          firebaseAuth: await userRepository.getUser(), authenSuccess: true);
+          firebaseAuth: await userRepository.getUser(), authenSuccess: true, authenFailure: false);
     } else if (event is AuthenLogoutEvent) {
         await userRepository.signOut();
       yield state.copyWith(authenFailure: true);

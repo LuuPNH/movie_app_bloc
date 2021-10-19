@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_bloc/authentication/authen_bloc.dart';
 import 'package:movie_app_bloc/authentication/authen_event.dart';
 import 'package:movie_app_bloc/login_firebase/ButtonForm.dart';
-import 'package:movie_app_bloc/login_firebase/CurvedWidget.dart';
 import 'package:movie_app_bloc/login_firebase/login_bloc.dart';
 import 'package:movie_app_bloc/login_firebase/login_event.dart';
 import 'package:movie_app_bloc/login_firebase/login_state.dart';

@@ -7,7 +7,7 @@ class LoginBloc extends BaseBloc<LoginState> {
 
   final UserRepository userRepository = UserRepository();
 
-  LoginBloc() : super(LoginState(isLoading: true));
+  LoginBloc() : super(LoginState(isLoading: true, loginFailure: false, loginSuccess: false));
 
   @override
   Stream<LoginState> mapEventToState(BaseEvent event) async* {
@@ -16,10 +16,11 @@ class LoginBloc extends BaseBloc<LoginState> {
         await userRepository.signInWithCredentials(
             event.username, event.password);
         print("thanhcong");
-        yield state.copyWith(isLoading: false, loginSuccess: true);
+        yield state.copyWith(isLoading: false, loginSuccess: true, loginFailure: false);
       } catch (error) {
+        print("loi roi ne");
         print(error);
-        yield state.copyWith(isLoading: false, loginFailure: true);
+        yield state.copyWith(isLoading: false, loginFailure: true, loginSuccess: false);
       }
     }
   }
