@@ -1,9 +1,15 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app_bloc/authentication/authen_bloc.dart';
+import 'package:movie_app_bloc/authentication/authen_event.dart';
+import 'package:movie_app_bloc/authentication/authen_state.dart';
+import 'package:movie_app_bloc/authentication/authen_widget.dart';
 import 'package:movie_app_bloc/genres/genre_widget.dart';
 import 'package:movie_app_bloc/now_playing/now_playing_widget.dart';
 import 'package:movie_app_bloc/person/person_widget.dart';
 import 'package:movie_app_bloc/popular/popular_widget.dart';
+import 'package:teq_flutter_core/teq_flutter_core.dart';
 import '../../style/theme.dart' as Style;
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +20,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  int selectedIndex = 0;
+
+  List<Widget> widgetOptions = <Widget>[
+    ListView(children: [
+      NowPlayingWidget(),
+      GenresWidget(),
+      PersonsWidget(),
+      PopularMovieWidget(),
+    ]),
+    AuthenWidget()
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,14 +62,25 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: ListView(
-        children: [
-          NowPlayingWidget(),
-          GenresWidget(),
-          PersonsWidget(),
-          PopularMovieWidget(),
+      body: Container(
+        child: widgetOptions.elementAt(selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_box),
+            label: 'Information',
+          ),
         ],
+        currentIndex: selectedIndex,
+        selectedItemColor: Style.Colors.secondColor,
+        onTap: _onItemTapped,
       ),
     );
   }
+
 }
