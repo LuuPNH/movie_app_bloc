@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie_app_bloc/now_playing/now_playing_bloc.dart';
 import 'package:movie_app_bloc/now_playing/now_playing_state.dart';
-import 'package:movie_app_bloc/screen/home/detail_screen.dart';
+import 'package:movie_app_bloc/screen/detail/detail_screen.dart';
 import 'package:page_indicator/page_indicator.dart';
 import 'package:teq_flutter_core/teq_flutter_core.dart';
 import 'package:movie_app_bloc/style/theme.dart' as Style;

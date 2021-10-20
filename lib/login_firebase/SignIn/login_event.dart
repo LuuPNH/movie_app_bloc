@@ -8,3 +8,6 @@ class LoginEvent extends BaseEvent {
 
   LoginEvent(this.username, this.password);
 }
+
+@immutable
+class LoginFailEvent extends BaseEvent {}

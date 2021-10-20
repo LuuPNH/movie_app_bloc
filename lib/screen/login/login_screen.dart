@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app_bloc/login_firebase/login_widget.dart';
+import 'package:movie_app_bloc/login_firebase/SignIn/login_widget.dart';
 import 'package:movie_app_bloc/style/theme.dart' as Style;
 import 'package:movie_app_bloc/login_firebase/CurvedWidget.dart';
 

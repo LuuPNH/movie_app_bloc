@@ -9,6 +9,7 @@ import 'package:movie_app_bloc/genres/genre_widget.dart';
 import 'package:movie_app_bloc/now_playing/now_playing_widget.dart';
 import 'package:movie_app_bloc/person/person_widget.dart';
 import 'package:movie_app_bloc/popular/popular_widget.dart';
+import 'package:movie_app_bloc/search/search_widget.dart';
 import 'package:teq_flutter_core/teq_flutter_core.dart';
 import '../../style/theme.dart' as Style;
 
@@ -39,9 +40,15 @@ class _HomeScreenState extends State<HomeScreen> {
       selectedIndex = index;
     });
   }
+
+  void _openEndDrawer() {
+    _scaffoldKey.currentState!.openEndDrawer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Style.Colors.mainColor,
         centerTitle: true,
@@ -52,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text("Movie App"),
         actions: <Widget>[
           IconButton(
-              onPressed: null,
+              onPressed: _openEndDrawer,
               icon: Icon(
                 EvaIcons.searchOutline,
                 color: Colors.white,
@@ -63,6 +70,16 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
+      endDrawer: Drawer(
+        child: SafeArea(
+          child: Container(
+            color: Style.Colors.mainColor,
+            padding: EdgeInsets.all(16),
+            child: SearchMoviesWidget(),
+          ),
+        ),
+      ),
+      endDrawerEnableOpenDragGesture: false,
       body: Container(
         child: widgetOptions.elementAt(selectedIndex),
       ),

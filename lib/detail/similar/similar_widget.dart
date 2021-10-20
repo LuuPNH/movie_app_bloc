@@ -5,7 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app_bloc/detail/similar/similar_bloc.dart';
 import 'package:movie_app_bloc/detail/similar/similar_event.dart';
 import 'package:movie_app_bloc/detail/similar/similar_state.dart';
-import 'package:movie_app_bloc/screen/home/detail_screen.dart';
+import 'package:movie_app_bloc/screen/detail/detail_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:teq_flutter_core/teq_flutter_core.dart';
 import 'package:movie_app_bloc/style/theme.dart' as Style;

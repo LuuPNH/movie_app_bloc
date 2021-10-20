@@ -1,24 +1,22 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app_bloc/authentication/authen_bloc.dart';
-import 'package:movie_app_bloc/authentication/authen_event.dart';
 import 'package:movie_app_bloc/login_firebase/ButtonForm.dart';
-import 'package:movie_app_bloc/login_firebase/login_bloc.dart';
-import 'package:movie_app_bloc/login_firebase/login_event.dart';
-import 'package:movie_app_bloc/login_firebase/login_state.dart';
+import 'package:movie_app_bloc/login_firebase/resgiter/register_bloc.dart';
+import 'package:movie_app_bloc/login_firebase/resgiter/register_event.dart';
+import 'package:movie_app_bloc/login_firebase/resgiter/register_state.dart';
 import 'package:teq_flutter_core/teq_flutter_core.dart';
 import 'package:movie_app_bloc/style/theme.dart' as Style;
 
-class LoginWidget extends StatefulWidget {
-  const LoginWidget({Key? key}) : super(key: key);
+class RegisterWidget extends StatefulWidget {
+  const RegisterWidget({Key? key}) : super(key: key);
 
   @override
-  _LoginWidgetState createState() => _LoginWidgetState();
+  _RegisterWidgetState createState() => _RegisterWidgetState();
 }
 
-class _LoginWidgetState  extends TeqWidgetState<LoginBloc, LoginWidget>
-with BasePullToRefreshMixin<LoginWidget>  {
+class _RegisterWidgetState  extends TeqWidgetState<RegisterBloc, RegisterWidget>
+    with BasePullToRefreshMixin<RegisterWidget>  {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordlController = TextEditingController();
@@ -27,31 +25,42 @@ with BasePullToRefreshMixin<LoginWidget>  {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [BlocProvider(create: (context) => bloc)],
-        child: BlocConsumer<LoginBloc, LoginState>(
+        child: BlocConsumer<RegisterBloc, RegisterState>(
           bloc: bloc,
           builder: _buildbody,
           listener: _handleAction,
         ));
   }
-  void _handleAction(BuildContext context, LoginState state) {}
+  void _handleAction(BuildContext context, RegisterState state) {}
 
   @override
-  LoginBloc createBloc() => LoginBloc();
+  RegisterBloc createBloc() => RegisterBloc();
 
   @override
   // TODO: implement refresherBloc
   BaseBloc get refresherBloc => bloc;
 
   void _onFormSubmitted() {
-    bloc.add(LoginEvent(emailController.text, passwordlController.text));
+    bloc.add(RegisterEvent(emailController.text, passwordlController.text));
   }
 
-
-  Widget _buildbody(BuildContext context, LoginState state) {
+  bool validateEmail() {
+    Pattern pattern =
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+        r"{0,253}[a-zA-Z0-9])?)*$";
+    RegExp regex = new RegExp(pattern.toString());
+    if (!regex.hasMatch(emailController.text) || emailController.text.isEmpty)
+      return false;
+    else
+      return true;
+  }
+  Widget _buildbody(BuildContext context, RegisterState state) {
     Size size = MediaQuery.of(context).size;
-    return BlocListener<LoginBloc, LoginState>(
+    return BlocListener<RegisterBloc, RegisterState>(
         listener: (context, state) {
-          if(state.loginFailure) {
+          if(state.registerFailure) {
+            bloc.add(RegisterFailEvent());
             Scaffold.of(context)
               ..removeCurrentSnackBar()
               ..showSnackBar(
@@ -60,7 +69,7 @@ with BasePullToRefreshMixin<LoginWidget>  {
                       content: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Login Failure! Please again"),
+                            Text("Register Failure! Please again"),
                             Icon(Icons.error)
                           ])));
           }
@@ -73,16 +82,27 @@ with BasePullToRefreshMixin<LoginWidget>  {
                       content: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Logging In..."),
+                            Text("Registering..."),
                             CircularProgressIndicator()]
                       )));
           }
-          if(state.loginSuccess) {
+          if(state.registerSuccess) {
             print("Success");
-            BlocProvider.of<AuthenBloc>(context).add(AuthenLoggedInEvent());
+            Scaffold.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(
+                  SnackBar(
+                      backgroundColor: Style.Colors.secondColor,
+                      content: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Sign Up Success"),
+                            CircularProgressIndicator()]
+                      )));
+            Navigator.pop(context);
           }
         },
-        child: BlocBuilder<LoginBloc, LoginState> (
+        child: BlocBuilder<RegisterBloc, RegisterState> (
           builder: (context, state) {
             return  Padding(
               padding: const EdgeInsets.all(20.0),
@@ -112,9 +132,11 @@ with BasePullToRefreshMixin<LoginWidget>  {
                               borderSide: const BorderSide(color: Style.Colors.secondColor, width: 1.0)
                           )
                       ),
-                      autovalidate: true,
-                      validator: (_) {
-                        // return !state.isEmailValid! ? 'Invalid Email' : null;
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if(validateEmail()) {
+                          return null;
+                        } else return "Enter a valid email address";
                       },
                     ),
                     SizedBox(
@@ -144,13 +166,11 @@ with BasePullToRefreshMixin<LoginWidget>  {
                               borderSide: const BorderSide(color: Style.Colors.secondColor, width: 1.0)
                           )
                       ),
-                      autovalidate: true,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Passoword can't empty" ;
+                          return "Enter a valid email address" ;
                         }
-                        // else if(!state.isPasswordVaild!) { return 'Invalid Passoword';}
-                        // return null;
                       },
                     ),
                     SizedBox(
@@ -161,7 +181,7 @@ with BasePullToRefreshMixin<LoginWidget>  {
                       height: 40.0,
                       width: MediaQuery.of(context).size.width * 0.5,
                       colorButton: Style.Colors.secondColor,
-                      titleButton: "Login",
+                      titleButton: "Register",
                       function: (){
                         _onFormSubmitted();
                       },
@@ -169,18 +189,15 @@ with BasePullToRefreshMixin<LoginWidget>  {
                     SizedBox(
                       height: 5.0,
                     ),
-
-                    ButtonForm(
-                      height: 40.0,
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      colorButton: Style.Colors.secondColor,
-                      titleButton: "Register",
-                      function: (){
-                        // Navigator.push(context, MaterialPageRoute(
-                        //     builder: (_) {
-                        //       return RegisterScreen();
-                        //     }) );
-                      },
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("You have a account?", style: TextStyle(color: Style.Colors.text)),
+                        TextButton(
+                          onPressed: () { Navigator.pop(context);},
+                          child: const Text('Singin', style: TextStyle(color: Style.Colors.secondColor)),
+                        ),
+                      ],
                     ),
                   ],
                 ),

@@ -1,5 +1,5 @@
-import 'package:movie_app_bloc/login_firebase/login_event.dart';
-import 'package:movie_app_bloc/login_firebase/login_state.dart';
+import 'package:movie_app_bloc/login_firebase/SignIn/login_event.dart';
+import 'package:movie_app_bloc/login_firebase/SignIn/login_state.dart';
 import 'package:movie_app_bloc/repository/user_repository.dart';
 import 'package:teq_flutter_core/teq_flutter_core.dart';
 
@@ -16,12 +16,15 @@ class LoginBloc extends BaseBloc<LoginState> {
         await userRepository.signInWithCredentials(
             event.username, event.password);
         print("thanhcong");
-        yield state.copyWith(isLoading: false, loginSuccess: true, loginFailure: false);
+        yield state.copyWith(loginSuccess: true, loginFailure: false);
       } catch (error) {
         print("loi roi ne");
         print(error);
-        yield state.copyWith(isLoading: false, loginFailure: true, loginSuccess: false);
+        yield state.copyWith(loginFailure: true, loginSuccess: false);
       }
+    }
+    else if (event is LoginFailEvent) {
+      yield state.copyWith(loginFailure: false);
     }
   }
 }

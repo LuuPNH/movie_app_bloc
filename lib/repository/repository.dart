@@ -126,4 +126,15 @@ class MovieRepository {
       return [];
     }
   }
+
+  Future<List<Movie>> getSearchMovies(String name, int page) async {
+    var params = {"api_key": apiKey, "page": page, "query": name};
+    try {
+      Response response = await _dio.get(searchMovieUrl, queryParameters: params);
+      return MovieResponse.fromJson(response.data).movies;
+    } catch (error, stacktrace) {
+      print("Exception Repositoty: $error stackTrace: $stacktrace");
+      return [];
+    }
+  }
 }

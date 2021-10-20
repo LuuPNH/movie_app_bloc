@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_bloc/authentication/authen_bloc.dart';
 import 'package:movie_app_bloc/authentication/authen_event.dart';
 import 'package:movie_app_bloc/authentication/authen_state.dart';
-import 'package:movie_app_bloc/screen/home/login_screen.dart';
+import 'package:movie_app_bloc/screen/login/login_screen.dart';
 import 'package:teq_flutter_core/teq_flutter_core.dart';
 
 class AuthenWidget extends StatefulWidget {
