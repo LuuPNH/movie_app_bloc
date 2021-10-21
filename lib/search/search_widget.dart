@@ -10,6 +10,7 @@ import 'package:movie_app_bloc/search/search_event.dart';
 import 'package:movie_app_bloc/search/search_state.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:teq_flutter_core/teq_flutter_core.dart';
+import 'dart:async';
 
 class SearchMoviesWidget extends StatefulWidget {
   const SearchMoviesWidget({Key? key}) : super(key: key);
@@ -27,6 +28,29 @@ class _SearchMoviesWidgetState
       RefreshController(initialRefresh: false);
 
   int page = 1;
+  Timer? debounce;
+  bool isFirstSearch = true;
+
+  void _onSearchChanged(String query) async {
+    if (debounce?.isActive ?? false) debounce!.cancel();
+    debounce = Timer(const Duration(milliseconds: 500), () async {
+      if (textEditingController.text.isEmpty == false) {
+        isFirstSearch = false;
+        page = 1;
+        print(textEditingController.text);
+        bloc.add(SearchMovieEvent(textEditingController.text, page));
+      } else if (textEditingController.text.isEmpty) {
+        isFirstSearch = true;
+        bloc.add(SearchMovieEvent("khongcogi", page));
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    debounce?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +67,7 @@ class _SearchMoviesWidgetState
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 18.0),
-                onChanged: (text) async {
-                  Future.delayed(Duration(milliseconds: 500));
-                  if (text.isEmpty == false) {
-                    page = 1;
-                    await bloc
-                      ..add(SearchMovieEvent(textEditingController.text, page));
-                  }
-                },
+                onChanged: _onSearchChanged,
                 controller: textEditingController,
                 cursorColor: Colors.white,
                 decoration: InputDecoration(
@@ -252,15 +269,17 @@ class _SearchMoviesWidgetState
       } else {
         return Container(
           color: Style.Colors.mainColor,
-          height: 30.0,
-          width: 20.0,
           child: Center(
-            child: Text(
-              "No movies",
-              style: TextStyle(
-                  color: Style.Colors.text,
-                  fontWeight: FontWeight.bold),
-            ),
+            child: Center(
+                child: Text((() {
+              if (isFirstSearch) {
+                return "What is your find?";
+              }
+              return "No movies this name";
+            })(),
+                    style: TextStyle(
+                        color: Style.Colors.text,
+                        fontWeight: FontWeight.bold))),
           ),
         );
       }

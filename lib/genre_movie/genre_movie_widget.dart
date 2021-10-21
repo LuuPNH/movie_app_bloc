@@ -70,7 +70,6 @@ class _GenreMoviesWidgetState
   }
 
   Widget _buildbody(BuildContext context, GenreMovieState state) {
-    print("hahaha");
     Size size = MediaQuery.of(context).size;
     return BlocBuilder<GenreMovieBloc, GenreMovieState>(
         builder: (context, state) {
@@ -120,7 +119,7 @@ class _GenreMoviesWidgetState
                   body = Text("No more Data");
                 }
                 return Container(
-                  height: 200,
+                  height: size.height * 0.4,
                   child: Center(child: body),
                 );
               },
