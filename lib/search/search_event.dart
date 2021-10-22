@@ -8,15 +8,13 @@ class SearchMovieStartEvent extends BaseEvent {}
 @immutable
 class SearchMovieEvent extends BaseEvent {
   final String name;
-  final int pageKey;
 
-  SearchMovieEvent(this.name, this.pageKey);
+  SearchMovieEvent(this.name);
 }
 
 @immutable
 class SearchMovieMoreEvent extends BaseEvent {
   final String name;
-  final int pageKey;
 
-  SearchMovieMoreEvent(this.name, this.pageKey);
+  SearchMovieMoreEvent(this.name);
 }

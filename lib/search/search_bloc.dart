@@ -8,23 +8,30 @@ class SearchMovieBloc extends BaseBloc<SearchMovieState> {
   SearchMovieBloc() : super(SearchMovieState(isLoading: true));
 
   MovieRepository movieRepository = MovieRepository();
+  int pageKey = 1;
 
   @override
   Stream<SearchMovieState> mapEventToState(BaseEvent event) async* {
     if (event is SearchMovieEvent) {
-      var list = await movieRepository.getSearchMovies(event.name, event.pageKey);
-      yield state.copyWith(list: list);
-    }
-    else if (event is SearchMovieMoreEvent) {
+      pageKey = 1;
+      var list =
+          await movieRepository.getSearchMovies(event.name, pageKey);
+      yield state.copyWith(list: list,error: false);
+    } else if (event is SearchMovieMoreEvent) {
       List<Movie>? li;
       if (state.list?.isNotEmpty == true) {
+        pageKey += 1;
         List<Movie>? _list =
-        await movieRepository.getSearchMovies(event.name, event.pageKey);
+            await movieRepository.getSearchMovies(event.name, pageKey);
+
+        if(_list.isEmpty == true){
+          yield state.copyWith(error: true);
+        }
         li = [...state.list!, ..._list];
-        yield state.copyWith(list: li);
+        yield state.copyWith(list: li, error: false);
       }
     } else if (event is SearchMovieStartEvent) {
-      yield state.copyWith(isFirstLoad: true);
+      yield state.copyWith(isFirstLoad: true,error: false);
     }
   }
 }

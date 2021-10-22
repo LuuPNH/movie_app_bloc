@@ -18,9 +18,8 @@ class LoginWidget extends StatefulWidget {
   _LoginWidgetState createState() => _LoginWidgetState();
 }
 
-class _LoginWidgetState  extends TeqWidgetState<LoginBloc, LoginWidget>
-with BasePullToRefreshMixin<LoginWidget>  {
-
+class _LoginWidgetState extends TeqWidgetState<LoginBloc, LoginWidget>
+    with BasePullToRefreshMixin<LoginWidget> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordlController = TextEditingController();
 
@@ -34,6 +33,7 @@ with BasePullToRefreshMixin<LoginWidget>  {
           listener: _handleAction,
         ));
   }
+
   void _handleAction(BuildContext context, LoginState state) {}
 
   @override
@@ -58,149 +58,148 @@ with BasePullToRefreshMixin<LoginWidget>  {
     else
       return true;
   }
+
   Widget _buildbody(BuildContext context, LoginState state) {
     Size size = MediaQuery.of(context).size;
-    return BlocListener<LoginBloc, LoginState>(
-        listener: (context, state) {
-          if(state.loginFailure) {
-            bloc.add(LoginFailEvent());
-            Scaffold.of(context)
-              ..removeCurrentSnackBar()
-              ..showSnackBar(
-                  SnackBar(
-                      backgroundColor: Style.Colors.secondColor,
-                      content: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Login Failure! Please again"),
-                            Icon(Icons.error)
-                          ])));
-          }
-          if(state.isLoading) {
-            Scaffold.of(context)
-              ..removeCurrentSnackBar()
-              ..showSnackBar(
-                  SnackBar(
-                      backgroundColor: Style.Colors.secondColor,
-                      content: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Logging In..."),
-                            CircularProgressIndicator()]
-                      )));
-          }
-          if(state.loginSuccess) {
-            print("Success");
-            BlocProvider.of<AuthenBloc>(context).add(AuthenLoggedInEvent());
-          }
-        },
-        child: BlocBuilder<LoginBloc, LoginState> (
-          builder: (context, state) {
-            return  Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Form(
-                child: Column(
+    return BlocListener<LoginBloc, LoginState>(listener: (context, state) {
+      if (state.loginFailure) {
+        bloc.add(LoginFailEvent());
+        Scaffold.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(SnackBar(
+              backgroundColor: Style.Colors.secondColor,
+              content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    //email
-                    TextFormField(
-                      controller: emailController,
-                      style: TextStyle(color: Style.Colors.text),
-                      decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(width: 1,color: Style.Colors.secondColor),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(width: 1,color: Style.Colors.secondColor),
-                          ),
-                          hintText: 'Enter your email',
-                          hintStyle: TextStyle(color: Style.Colors.text),
-                          labelText: 'Email',
-                          labelStyle: TextStyle(color: Style.Colors.secondColor),
-                          icon: Icon(EvaIcons.email, color: Style.Colors.secondColor),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                              borderSide: const BorderSide(color: Style.Colors.secondColor, width: 1.0)
-                          )
+                    Text("Login Failure! Please again"),
+                    Icon(Icons.error)
+                  ])));
+      }
+      if (state.isLoading) {
+        Scaffold.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(SnackBar(
+              backgroundColor: Style.Colors.secondColor,
+              content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Logging In..."),
+                    CircularProgressIndicator()
+                  ])));
+      }
+      if (state.loginSuccess) {
+        print("Success");
+        BlocProvider.of<AuthenBloc>(context).add(AuthenLoggedInEvent());
+      }
+    }, child: BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            child: Column(
+              children: [
+                //email
+                TextFormField(
+                  controller: emailController,
+                  style: TextStyle(color: Style.Colors.text),
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        borderSide: BorderSide(
+                            width: 1, color: Style.Colors.secondColor),
                       ),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                         if(validateEmail()) {
-                           return null;
-                         } else return "Enter a valid email address";
-                      },
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    //password
-                    TextFormField(
-                      controller: passwordlController,
-                      style: TextStyle(color: Style.Colors.text),
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(width: 1,color: Style.Colors.secondColor),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            borderSide: BorderSide(width: 1,color: Style.Colors.secondColor),
-                          ),
-                          hintText: 'Enter your password',
-                          hintStyle: TextStyle(color: Style.Colors.text),
-                          labelText: 'Passowrd',
-                          labelStyle: TextStyle(color: Style.Colors.secondColor),
-                          icon: Icon(EvaIcons.lock, color: Style.Colors.secondColor),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                              borderSide: const BorderSide(color: Style.Colors.secondColor, width: 1.0)
-                          )
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        borderSide: BorderSide(
+                            width: 1, color: Style.Colors.secondColor),
                       ),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Enter a valid email address" ;
-                        }
-                      },
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    //Button
-                    ButtonForm(
-                      height: 40.0,
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      colorButton: Style.Colors.secondColor,
-                      titleButton: "Login",
-                      function: (){
-                        _onFormSubmitted();
-                      },
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-
-                    ButtonForm(
-                      height: 40.0,
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      colorButton: Style.Colors.secondColor,
-                      titleButton: "Register",
-                      function: (){
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (_) {
-                              return RegisterScreen();
-                            }) );
-                      },
-                    ),
-                  ],
+                      hintText: 'Enter your email',
+                      hintStyle: TextStyle(color: Style.Colors.text),
+                      labelText: 'Email',
+                      labelStyle: TextStyle(color: Style.Colors.secondColor),
+                      icon:
+                          Icon(EvaIcons.email, color: Style.Colors.secondColor),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: const BorderSide(
+                              color: Style.Colors.secondColor, width: 1.0))),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if (validateEmail()) {
+                      return null;
+                    } else
+                      return "Enter a valid email address";
+                  },
                 ),
-              ),
-            );
-          },
-        )
-    );
+                SizedBox(
+                  height: 5.0,
+                ),
+                //password
+                TextFormField(
+                  controller: passwordlController,
+                  style: TextStyle(color: Style.Colors.text),
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        borderSide: BorderSide(
+                            width: 1, color: Style.Colors.secondColor),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        borderSide: BorderSide(
+                            width: 1, color: Style.Colors.secondColor),
+                      ),
+                      hintText: 'Enter your password',
+                      hintStyle: TextStyle(color: Style.Colors.text),
+                      labelText: 'Passowrd',
+                      labelStyle: TextStyle(color: Style.Colors.secondColor),
+                      icon:
+                          Icon(EvaIcons.lock, color: Style.Colors.secondColor),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: const BorderSide(
+                              color: Style.Colors.secondColor, width: 1.0))),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Enter a valid email address";
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                //Button
+                ButtonForm(
+                  height: 40.0,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  colorButton: Style.Colors.secondColor,
+                  titleButton: "Login",
+                  function: () {
+                    _onFormSubmitted();
+                  },
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
 
+                ButtonForm(
+                  height: 40.0,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  colorButton: Style.Colors.secondColor,
+                  titleButton: "Register",
+                  function: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return RegisterScreen();
+                    }));
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ));
   }
 }

@@ -13,7 +13,7 @@ class SearchMovieState extends RefresherBaseState<Movie> {
     list,
     isFirstLoad,
     isLoadingMore,
-    otherError
+    otherError,
   ];
 
   SearchMovieState({
