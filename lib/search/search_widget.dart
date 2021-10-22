@@ -114,7 +114,6 @@ class _SearchMoviesWidgetState
   }
 
   void _onRefresh() async {
-    // if failed,use refreshFailed()
     bloc.add(SearchMovieEvent(textEditingController.text));
   }
 
@@ -122,10 +121,14 @@ class _SearchMoviesWidgetState
     Size size = MediaQuery.of(context).size;
     return BlocListener<SearchMovieBloc, SearchMovieState>(
       listener: (context, state){
-        if(state.error == true){
+        if(state.errorLoadmore == true){
           _refreshController.loadFailed();
-        } else {
+        } else if(!state.errorLoadmore) {
           _refreshController.loadComplete();
+        } else if(state.list?.isEmpty == true) {
+          _refreshController.refreshFailed();
+        } else if(state.list?.isEmpty == false) {
+          _refreshController.refreshCompleted();
         }
       },
       child: BlocBuilder<SearchMovieBloc, SearchMovieState>(
@@ -133,7 +136,7 @@ class _SearchMoviesWidgetState
         if (state.list?.isNotEmpty == true) {
           return Expanded(
             child: SmartRefresher(
-              enablePullDown: false,
+              enablePullDown: true,
               enablePullUp: true,
               footer: CustomFooter(
                 builder: (BuildContext context, LoadStatus? mode) {

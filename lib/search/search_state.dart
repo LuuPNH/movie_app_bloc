@@ -3,18 +3,25 @@ import 'package:teq_flutter_core/teq_flutter_core.dart';
 
 class SearchMovieState extends RefresherBaseState<Movie> {
   final otherError;
+  final List<Movie>? listLoadMore;
+  final bool errorLoadmore;
+  final bool errorRefresh;
 
 
   @override
   // TODO: implement props
-  List<Object?> get props => [
-    error,
-    isLoading,
-    list,
-    isFirstLoad,
-    isLoadingMore,
-    otherError,
-  ];
+  List<Object?> get props =>
+      [
+        error,
+        isLoading,
+        list,
+        isFirstLoad,
+        isLoadingMore,
+        otherError,
+        errorLoadmore,
+        listLoadMore,
+        errorRefresh
+      ];
 
   SearchMovieState({
     isFirstLoad = false,
@@ -24,6 +31,10 @@ class SearchMovieState extends RefresherBaseState<Movie> {
     list,
     itemAttributes,
     this.otherError,
+    this.errorLoadmore = false,
+    this.listLoadMore,
+    this.errorRefresh = false
+
   }) : super(
     isFirstLoad: isFirstLoad,
     isLoading: isLoading,
@@ -42,15 +53,21 @@ class SearchMovieState extends RefresherBaseState<Movie> {
     List<Movie>? list,
     BaseItemAttributes? itemAttributes,
     var otherError,
+    List<Movie>? listLoadMore,
+    bool? errorLoadmore,
+    bool? errorRefresh
   }) =>
       SearchMovieState(
-        isFirstLoad: isFirstLoad ?? this.isFirstLoad,
-        isLoading: isLoading ?? false,
-        isLoadingMore: isLoadingMore ?? this.isLoadingMore,
-        error: error,
-        list: list ?? this.list,
-        itemAttributes: itemAttributes ?? this.itemAttributes,
-        otherError: otherError,
+          isFirstLoad: isFirstLoad ?? this.isFirstLoad,
+          isLoading: isLoading ?? false,
+          isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+          error: error,
+          list: list ?? this.list,
+          itemAttributes: itemAttributes ?? this.itemAttributes,
+          otherError: otherError,
+          listLoadMore: listLoadMore ?? this.listLoadMore,
+          errorLoadmore: errorLoadmore ?? this.errorLoadmore,
+          errorRefresh: errorRefresh ?? this.errorRefresh
       );
 
 }
