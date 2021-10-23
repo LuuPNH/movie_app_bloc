@@ -125,9 +125,10 @@ class _SearchMoviesWidgetState
           _refreshController.loadFailed();
         } else if(!state.errorLoadmore) {
           _refreshController.loadComplete();
-        } else if(state.list?.isEmpty == true) {
+        }
+        if(state.errorRefresh == true) {
           _refreshController.refreshFailed();
-        } else if(state.list?.isEmpty == false) {
+        } else if(state.errorRefresh == false) {
           _refreshController.refreshCompleted();
         }
       },
