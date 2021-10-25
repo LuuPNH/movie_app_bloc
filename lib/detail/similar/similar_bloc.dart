@@ -12,16 +12,16 @@ class SimilarMovieBloc extends BaseBloc<SimilarMovieState> {
   @override
   Stream<SimilarMovieState> mapEventToState(BaseEvent event) async* {
     if (event is SimilarMovieEvent) {
-      var list = await movieRepository.getSimilarMovie(event.id, event.pageKey);
-      yield state.copyWith(list: list);
+      var list = await movieRepository.getSimilarMovie(event.id, state.page);
+      yield state.copyWith(list: list, page: state.page + 1);
     }
     if (event is SimilarMovieMoreEvent) {
       List<Movie>? li;
       if (state.list?.isNotEmpty == true) {
         List<Movie>? _list =
-        await movieRepository.getSimilarMovie(event.id, event.pageKey);
+            await movieRepository.getSimilarMovie(event.id, state.page);
         li = [...state.list!, ..._list];
-        yield state.copyWith(list: li);
+        yield state.copyWith(list: li, page: state.page + 1);
       }
     }
   }

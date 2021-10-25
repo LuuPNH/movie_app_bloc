@@ -12,16 +12,16 @@ class GenreMovieBloc extends BaseBloc<GenreMovieState> {
   @override
   Stream<GenreMovieState> mapEventToState(BaseEvent event) async* {
     if (event is GenresMovieEvent) {
-      var list = await movieRepository.getMovieByGenre(event.id, event.pageKey);
-      yield state.copyWith(list: list);
+      var list = await movieRepository.getMovieByGenre(event.id, state.page);
+      yield state.copyWith(list: list, page: state.page + 1);
     }
     if (event is GenresMovieMoreEvent) {
       List<Movie>? li;
       if (state.list?.isNotEmpty == true) {
         List<Movie>? _list =
-            await movieRepository.getMovieByGenre(event.id, event.pageKey);
+            await movieRepository.getMovieByGenre(event.id, state.page);
         li = [...state.list!, ..._list];
-        yield state.copyWith(list: li);
+        yield state.copyWith(list: li,page: state.page + 1);
       }
     }
   }

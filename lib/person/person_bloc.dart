@@ -12,15 +12,15 @@ class PersonBloc extends BaseBloc<PersonState> {
   @override
   Stream<PersonState> mapEventToState(BaseEvent event) async* {
     if (event is PersonEvent) {
-      var list = await movieRepository.getPersons(event.pageKey);
-      yield state.copyWith(list: list);
+      var list = await movieRepository.getPersons(state.page);
+      yield state.copyWith(list: list, page: state.page + 1);
     }
     if (event is PersonMoreEvent) {
       List<Person>? li;
       if (state.list?.isNotEmpty == true) {
-        List<Person>? _list = await movieRepository.getPersons(event.pageKey);
+        List<Person>? _list = await movieRepository.getPersons(state.page);
         li = [...state.list!, ..._list];
-        yield state.copyWith(list: li);
+        yield state.copyWith(list: li, page: state.page + 1);
       }
     }
   }

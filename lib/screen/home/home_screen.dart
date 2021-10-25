@@ -23,11 +23,14 @@ class _HomeScreenState extends State<HomeScreen> {
   static RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  List<Widget> widgetOptions = <Widget>[
-    home(),
-    AuthenWidget()];
-  List<Widget> homelist = <Widget>[
-    ];
+  List<Widget> widgetOptions = <Widget>[home(), AuthenWidget()];
+  static List<Widget> homelist = <Widget>[
+    NowPlayingWidget(),
+    GenresWidget(),
+    PersonsWidget(),
+    PopularMovieWidget(),
+  ];
+
   void _reload() {
     Future.delayed(Duration(seconds: 1), () {
       Navigator.pushReplacement<void, void>(
@@ -61,6 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   static Widget home() {
+    print("checklength");
+    print(homelist.length);
     return Container(
       color: Style.Colors.mainColor,
       child: SmartRefresher(
@@ -81,16 +86,15 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: _refreshController,
         onRefresh: _onRefresh,
         child: ListView.builder(
+          itemCount: homelist.length,
+          padding: const EdgeInsets.all(8),
           itemBuilder: (c, i) {
-           return Column(children: [
-              NowPlayingWidget(),
-              GenresWidget(),
-              PersonsWidget(),
-              PopularMovieWidget(),
-            ]);
+            return ListBody(
+              children: [
+                homelist[i],
+              ],
+            );
           },
-          itemExtent: 1020.0,
-          itemCount: 1,
         ),
       ),
     );

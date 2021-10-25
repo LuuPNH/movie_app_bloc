@@ -12,16 +12,15 @@ class PopularMovieBloc extends BaseBloc<PopularMovieState> {
   @override
   Stream<PopularMovieState> mapEventToState(BaseEvent event) async* {
     if (event is PopularMovieEvent) {
-      var list = await movieRepository.getPopularMovies(event.pageKey);
-      yield state.copyWith(list: list);
+      var list = await movieRepository.getPopularMovies(state.page);
+      yield state.copyWith(list: list, page: state.page + 1);
     }
     if (event is PopularMovieMoreEvent) {
       List<Movie>? li;
       if (state.list?.isNotEmpty == true) {
-        List<Movie>? _list =
-        await movieRepository.getPopularMovies(event.pageKey);
+        List<Movie>? _list = await movieRepository.getPopularMovies(state.page);
         li = [...state.list!, ..._list];
-        yield state.copyWith(list: li);
+        yield state.copyWith(list: li, page: state.page + 1);
       }
     }
   }

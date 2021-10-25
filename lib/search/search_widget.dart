@@ -24,7 +24,7 @@ class _SearchMoviesWidgetState
     with BasePullToRefreshMixin<SearchMoviesWidget> {
   TextEditingController textEditingController = TextEditingController();
 
-  static RefreshController _refreshController =
+  RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   Timer? debounce;
   bool isFirstSearch = true;
@@ -110,7 +110,6 @@ class _SearchMoviesWidgetState
 
   void _onLoadMore() async {
     bloc.add(SearchMovieMoreEvent(textEditingController.text));
-
   }
 
   void _onRefresh() async {
@@ -120,15 +119,11 @@ class _SearchMoviesWidgetState
   Widget _buildbody(BuildContext context, SearchMovieState state) {
     Size size = MediaQuery.of(context).size;
     return BlocListener<SearchMovieBloc, SearchMovieState>(
-      listener: (context, state){
-        if(state.errorLoadmore == true){
-          _refreshController.loadFailed();
-        } else if(!state.errorLoadmore) {
+      listener: (context, state) {
+        if (!state.errorLoadmore) {
           _refreshController.loadComplete();
         }
-        if(state.errorRefresh == true) {
-          _refreshController.refreshFailed();
-        } else if(state.errorRefresh == false) {
+        if (!state.errorRefresh) {
           _refreshController.refreshCompleted();
         }
       },
@@ -172,7 +167,7 @@ class _SearchMoviesWidgetState
                     body = Text("No more Data");
                   }
                   return Container(
-                    height: 55.0,
+                    height: 30.0,
                     child: Center(child: body),
                   );
                 },

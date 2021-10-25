@@ -2,14 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:teq_flutter_core/teq_flutter_core.dart';
 
 @immutable
-class PersonEvent extends BaseEvent {
-  final int pageKey;
-
-  PersonEvent(this.pageKey);
-}
+class PersonEvent extends BaseEvent {}
 
 @immutable
-class PersonMoreEvent extends BaseEvent {
-  final int pageKey;
-  PersonMoreEvent(this.pageKey);
-}
+class PersonMoreEvent extends BaseEvent {}
