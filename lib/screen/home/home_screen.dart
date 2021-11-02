@@ -1,13 +1,17 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_bloc/authentication/authen_widget.dart';
 import 'package:movie_app_bloc/genres/genre_widget.dart';
 import 'package:movie_app_bloc/now_playing/now_playing_widget.dart';
 import 'package:movie_app_bloc/person/person_widget.dart';
 import 'package:movie_app_bloc/popular/popular_widget.dart';
+import 'package:movie_app_bloc/search/search_bloc.dart';
+import 'package:movie_app_bloc/search/search_state.dart';
 import 'package:movie_app_bloc/search/search_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:teq_flutter_core/teq_flutter_core.dart';
 import '../../style/theme.dart' as Style;
 
 class HomeScreen extends StatefulWidget {
@@ -17,7 +21,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends TeqWidgetState<SearchMovieBloc, HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int selectedIndex = 0;
   static RefreshController _refreshController =
@@ -33,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _reload() {
     Future.delayed(Duration(seconds: 1), () {
-      Navigator.pushReplacement<void, void>(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute<void>(
           builder: (BuildContext context) => const HomeScreen(),
@@ -48,6 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  @override
+  SearchMovieBloc createBloc() => SearchMovieBloc();
+
+  @override
+  BaseBloc get refresherBloc => bloc;
+
   void _openEndDrawer() {
     _scaffoldKey.currentState!.openEndDrawer();
   }
@@ -59,13 +69,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
   }
 
   static Widget home() {
-    print("checklength");
-    print(homelist.length);
     return Container(
       color: Style.Colors.mainColor,
       child: SmartRefresher(
@@ -100,9 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+  Widget _buildbody() {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -156,4 +162,16 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) => bloc)
+      ],
+        child: _buildbody(),
+    );
+  }
+  void _handleAction(BuildContext context, SearchMovieState state) {}
 }
